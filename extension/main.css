@@ -1,25 +1,30 @@
 body {
-font-family: "Roboto", sans-serif;
-font-size: 100%;
-width: 800px;
-height: 800px;
+    font-family: "Roboto", sans-serif;
+    font-size: 100%;
+    width: 800px;
+    height: 800px;
 }
+
 img {
-height: 100%;
-width: 100%;
+    height: 100%;
+    width: 100%;
 }
+
 .page-title{
-font-size: 17px;
+    font-size: 17px;
 }
+
 .points{
-font-size: 17px;
+    font-size: 17px;
 }
+
 .title{
-font-size: 18px;
-float: right;
-margin-right: 61%;
+    font-size: 18px;
+    float: right;
+    margin-right: 61%;
 }
+
 .icon{
-height: 64px;
-width:  64px;
+    height: 64px;
+    width:  64px;
 }

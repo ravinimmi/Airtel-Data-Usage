@@ -5,7 +5,6 @@ function showRemainingData(){
                 var page = $("<div>");
                 page.html(result);
                 var dataLeft  = $(page.find(".description")[1]).find("span").html();
-                console.log(dataLeft);
                 setDataBadge(dataLeft.substring(0, 4));
             }
     });
