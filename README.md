@@ -1,4 +1,5 @@
-![alt text](https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/images/icon.png)
+<img src="https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/images/icon.png" alt="Drawing" style="width: 128px;height:128px;"/>
+
 # Airtel Data Usage
 
 ## Description
@@ -7,4 +8,7 @@ This extension is a graphical tool to analyze your past airtel broadband interne
 ## Extension
 [Chrome Extension Link](https://chrome.google.com/webstore/detail/airtel-data-usage/nkfdjeajgnkaalgkmkijbokclbkbgmoe)
 
-
+## Images
+<img src="https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/images/data_table.png" style="height: 50%; width: 50%">
+<br>
+<img src="https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/images/data_chart.png" style="height: 50%; width: 50%">
