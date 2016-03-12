@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="thirdParty/materialize/css/materialize.min.css">
     <link rel="stylesheet" href="main.css">
     <script src="thirdParty/jquery-2.2.1.min.js"></script>
+    <script src="thirdParty/highcharts.js"></script>
     <script src="thirdParty/materialize/js/materialize.min.js"></script>
     <script src="main.js"></script>
   </head>
@@ -42,15 +43,39 @@
             </div>
         </div>
         
-        <a class="waves-effect waves-light btn #00bcd4 cyan" id="airtel_page">Go To Data Usage Page</a>
-        <br/><br/>
-        <div class="points">1. Select dates and click on the blue "View Chart" button.</div>
+        <div id="login"></div>
+
+        <h5>Last 24 Hour Internet Usage</h5>
+        <div id="container24">
+              <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+        </div>
         <br/>
-        <img src="images/data_table.png" />
-        <br/><br/><br/>
-        <div class="points">2. Graphs will pop up showing data usage on selected dates.</div>
-        <br/>
-        <img src="images/data_chart.png" />
+        <h5>Last Month's Internet Usage</h5>
+        <div id="container">
+              <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+
     </div>
   </body>
 </html>

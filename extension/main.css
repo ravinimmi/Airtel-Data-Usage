@@ -5,19 +5,6 @@ body {
     height: 800px;
 }
 
-img {
-    height: 100%;
-    width: 100%;
-}
-
-.page-title{
-    font-size: 17px;
-}
-
-.points{
-    font-size: 17px;
-}
-
 .title{
     font-size: 18px;
     float: right;
