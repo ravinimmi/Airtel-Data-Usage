@@ -6,5 +6,5 @@
 This extension is a graphical tool to analyze your past airtel broadband internet usage. It displays internet usage in an informative graphical format.
 
 ## Extension
-[Chrome Extension Link](https://chrome.google.com/webstore/detail/airtel-data-usage/nkfdjeajgnkaalgkmkijbokclbkbgmoe)
+[Chrome Extension Link](https://chrome.google.com/webstore/detail/airtel-data-usage/ihjgdbjpapomfnbiedjhbgdgbgleopnb)
 
