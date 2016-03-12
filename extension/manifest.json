@@ -24,7 +24,7 @@
   
   "content_scripts": [
     {
-      "matches": ["https://www.airtel.in/*"],
+      "matches": ["https://www.airtel.in/personal/myaccount/telemedia/dsl-usage-details-24h"],
       "css":     ["myscript.css"],
       "js":      ["thirdParty/jquery-2.2.1.min.js",
                   "thirdParty/highcharts.js",
