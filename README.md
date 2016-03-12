@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/extension/images/icon.png" alt="Drawing" style="width: 32px;height:32px;"/>
+<img src="https://raw.githubusercontent.com/ravinimmi/Airtel-Data-Usage/master/extension/images/icon.png" height="64px">
 
 # Airtel Data Usage
 
