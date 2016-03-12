@@ -3,7 +3,7 @@
 
   "name": "Airtel Data Usage",
   "description": "This extension is a graphical tool to check your remaining data balance and analyze your past airtel broadband internet usage.",
-  "version": "2.0",
+  "version": "2.1",
 
   "browser_action": {
     "default_icon": "images/icon.png",
