@@ -1,6 +1,7 @@
 
 function showPlanDetails(){
     $.ajax({url: 'http://122.160.230.125:8080/planupdate/',
+            timeout: 2000,
             success: function(result){
                 var page = $("<div>");
                 page.html(result);
@@ -11,6 +12,11 @@ function showPlanDetails(){
                 var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
                 addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes);
                 showCharts(DSLNumber);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                var page = $(".container").html();
+                $(".container").html("<br/><h5 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h5>" + page);
+                console.log(errorThrown, textStatus);
             }
     });
 }
