@@ -15,7 +15,7 @@ function showPlanDetails(){
             },
             error: function(jqXHR, textStatus, errorThrown){
                 var page = $(".container").html();
-                $(".container").html("<br/><h5 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h5>" + page);
+                $(".container").html("<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>" + page);
                 console.log(errorThrown, textStatus);
             }
     });
