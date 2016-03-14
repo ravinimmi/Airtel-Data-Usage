@@ -1,7 +1,7 @@
 
 function showPlanDetails(){
     $.ajax({url: 'http://122.160.230.125:8080/planupdate/',
-            timeout: 2000,
+            timeout: 5000,
             success: function(result){
                 var page = $("<div>");
                 page.html(result);
