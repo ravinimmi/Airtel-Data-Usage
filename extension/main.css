@@ -12,8 +12,9 @@ body {
 }
 
 .icon{
-    height: 64px;
-    width:  64px;
+    height: 50px;
+    width:  50px;
+    margin: 7px 0px 0px 7px;
 }
 
 .error-msg{

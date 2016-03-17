@@ -89,7 +89,7 @@ function loggedOutMessage(){
     $("#container24").html("");
     var loginHTML ="<span style='color: red;'>Please log in to your broadband account to view past internet usage details below.</span>"+
                    "<br/>"+
-                   "<a class='waves-effect waves-light btn #00bcd4 cyan' id='airtel_page'>Login</a>"+
+                   "<a class='waves-effect waves-light btn blue' id='airtel_page'>Login</a>"+
                    "<br/><br/>";
     $("#login").html(loginHTML);
     $("#airtel_page").click(airtelLoginPage); 
