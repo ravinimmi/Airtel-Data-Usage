@@ -20,7 +20,7 @@
   "background":
   {
     "scripts":[
-        "thirdParty/jquery-2.2.1.min.js",
+        "js/jquery-2.2.1.min.js",
         "background.js"
     ]
   },
