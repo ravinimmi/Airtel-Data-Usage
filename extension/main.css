@@ -29,7 +29,7 @@ body {
 
 #preloader{
     margin-left: 45%;
-    margin-top: 24%;
+    margin-top: 20%;
 }
 
 #usage{
@@ -50,7 +50,7 @@ body {
 }
 
 
-#airtel-page{
+.airtel-page{
     margin-left: 42%;
     margin-top: 27%;
 }

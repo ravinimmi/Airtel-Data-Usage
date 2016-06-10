@@ -1,9 +1,22 @@
 
 var PLAN_URL = 'http://122.160.230.125:8080/planupdate/';
 var PLAN_TIMEOUT = 5000;
-var notAirtelBroadbandHTML = "<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>";
+var notAirtelBroadbandHTML = "<br><div class='error-msg'>You do not seem to be connected to Airtel Broadband.</div>";
+var USAGE_URL = 'https://www.airtel.in/services/reportserviceusagerecords_V1_1/customerusagedata';
+var AIRTEL_LOGIN_PAGE = "https://www.airtel.in/personal/myaccount/home";
+var preloaderHTML = '<div class="preloader-wrapper big active" id="preloader">'+
+                        '<div class="spinner-layer spinner-blue-only">'+
+                          '<div class="circle-clipper left">'+
+                            '<div class="circle"></div>'+
+                          '</div><div class="gap-patch">'+
+                            '<div class="circle"></div>'+
+                          '</div><div class="circle-clipper right">'+
+                            '<div class="circle"></div>'+
+                          '</div>'+
+                    '</div>';
 
 function showPlanDetails(){
+    showPreLoader();
     $.ajax({url: PLAN_URL,
             timeout: PLAN_TIMEOUT,
             success: function(result){
@@ -16,6 +29,11 @@ function showPlanDetails(){
     });
 }
 
+function showPreLoader(){
+    $("#24hrs-usage-chart").html(preloaderHTML);
+    $("#30days-usage-chart").html(preloaderHTML);
+}
+
 function parseHTML(HTML){
     var page = $("<div>");
     page.html(HTML);
@@ -26,7 +44,8 @@ function parseHTML(HTML){
     var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
     var message    = $(page.find(".detail")[0]).find("p").html();
     addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
-    showCharts(DSLNumber, false);
+    showOldChart('24hrs-usage', DSLNumber);
+    showOldChart('30days-usage', DSLNumber);
     addRefreshEventListener(DSLNumber);
 }
 
@@ -42,10 +61,12 @@ function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, messa
 
 function addRefreshEventListener(DSLNumber){
     $("#24hrs-usage-refresh").click(function(){
-        showCharts(DSLNumber, true);
+        showPreLoader();
+        showCharts(DSLNumber);
     });
     $("#30days-usage-refresh").click(function(){
-        showCharts(DSLNumber, true);
+        showPreLoader();
+        showCharts(DSLNumber);
     });
 }
 
@@ -54,68 +75,62 @@ function setDataBadge(data){
     chrome.browserAction.setBadgeText({text: data});
 }
 
-function showCharts(acctId, refresh){
-    if(refresh)
-    {
-        var date = new Date();
-        var endDate24 = date.toISOString().split('T')[0];
-        date.setDate(date.getDate()-1);
-        var startDate24 = date.toISOString().split('T')[0];
+function showDivChart(DSLNumber, div_id){
+    if(div_id === '24hrs-usage')
+        showChart(DSLNumber, 1, 'N', '24hrs-usage');
+    else if(div_id === '30days-usage')
+        showChart(DSLNumber, 30, 'Y', '30days-usage');
+}
 
-        var endDate = date.toISOString().split('T')[0];
-        date.setDate(date.getDate()-30);
-        var startDate = date.toISOString().split('T')[0];
+function showCharts(DSLNumber){
+    showDivChart(DSLNumber, '24hrs-usage');
+    showDivChart(DSLNumber, '30days-usage');
+}
 
-        params = {
-                acctId: acctId,
-                startDate: startDate24,
-                endDate: endDate24,
-                IsHistoricalRequired: 'N'
-        };
-        getUsageHistory(params, '24hrs-usage');
-
-        params = {
-                acctId: acctId,
-                startDate: startDate,
-                endDate: endDate,
-                IsHistoricalRequired: 'Y'
-        };
-        getUsageHistory(params, '30days-usage');
-    }
-    else
-    {
-        showOldData('24hrs-usage', acctId);
-        showOldData('30days-usage', acctId);
-    }
+function showChart(acctId, days, IsHistoricalRequired, div_id){
+    var date = new Date();
+    var endDate = date.toISOString().split('T')[0];
+    date.setDate(date.getDate()-days);
+    var startDate = date.toISOString().split('T')[0];
+    params = {
+            acctId: acctId,
+            startDate: startDate,
+            endDate: endDate,
+            IsHistoricalRequired: IsHistoricalRequired
+    };
+    getUsageHistory(params, div_id);
 }
 
 function getUsageHistory(params, div_id) { 
-    var baseUrl   = 'https://www.airtel.in/services/reportserviceusagerecords_V1_1/customerusagedata';
-    $.ajax({url: baseUrl,
-          data: params,
-          success: function(result){
+    $.ajax({url: USAGE_URL,
+            data: params,
+            success: function(result){
               if(typeof(result) == "object")
                   bucketAndDisplay(result, div_id);
               else
-                  loggedOutMessage();
-          },
-          error: function(jqXHR, textStatus, errorThrown){
+                  login();
+            },
+            error: function(jqXHR, textStatus, errorThrown){
               console.log(errorThrown, textStatus);
-          }
+            }
     });
 }
 
 function airtelLoginPage(){
-    var newURL = "https://www.airtel.in/personal/myaccount/home";
-    chrome.tabs.create({ url: newURL });
+    chrome.tabs.create({ url: AIRTEL_LOGIN_PAGE });
 }
 
-function loggedOutMessage(){
-    var loginHTML = "<a class='waves-effect waves-light btn blue' id='airtel-page'>Login</a>"
-    $("#24hrs-usage").html(loginHTML);
-    $("#30days-usage").html(loginHTML);
-    $("#airtel-page").click(airtelLoginPage); 
+function login(){
+    loginGeneric('24hrs-usage');
+    loginGeneric('30days-usage');
 }
+
+function loginGeneric(div_id){
+    var id = "airtel-page" + div_id;
+    $('#'+div_id).html("<a class='waves-effect waves-light btn blue airtel-page' id="+ id +">Login</a>");
+    $('#'+id).click(airtelLoginPage);
+}
+
 
 function bucketAndDisplay(response, div_id){
     usageList = response.GetCustomerDSLUsageResponse.Usage;
@@ -164,22 +179,22 @@ function displayChart(x, y, div_id){
 }
 
 function saveData(x, y, div_id){
-    var stuff = {};
-    stuff[div_id] = {'x': x, 'y': y};
-    chrome.storage.local.set(stuff);
+    var usageData = {};
+    usageData[div_id] = {'x': x, 'y': y};
+    chrome.storage.local.set(usageData);
 }
 
-function showOldData(div_id, acctId){
+function showOldChart(div_id, DSLNumber){
     chrome.storage.local.get(div_id, function(result){
-            if(Object.keys(result).length === 0){
-                showCharts(acctId, true);
-            }
-            else{
-                var x = result[div_id].x;
-                var y = result[div_id].y;
-                displayChart(x, y, div_id);   
-            }
-        });
+        if(Object.keys(result).length === 0){
+            showDivChart(DSLNumber, div_id);
+        }
+        else{
+            var x = result[div_id].x;
+            var y = result[div_id].y;
+            displayChart(x, y, div_id);   
+        }
+    });
 }
 
 
