@@ -1,26 +1,33 @@
 
+var PLAN_URL = 'http://122.160.230.125:8080/planupdate/';
+var PLAN_TIMEOUT = 5000;
+var notAirtelBroadbandHTML = "<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>";
+
 function showPlanDetails(){
-    $.ajax({url: 'http://122.160.230.125:8080/planupdate/',
-            timeout: 5000,
+    $.ajax({url: PLAN_URL,
+            timeout: PLAN_TIMEOUT,
             success: function(result){
-                var page = $("<div>");
-                page.html(result);
-                var plan      = $(page.find(".description")[0]).find("span").html();
-                var dataLeft  = $(page.find(".description")[1]).find("span").html();
-                var daysLeft  = $(page.find(".description")[2]).find("span").html();
-                var DSLNumber = $(page.find(".description")[3]).find("span").html();
-                var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
-                var message = $(page.find(".detail")[0]).find("p").html();
-                addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
-                showCharts(DSLNumber, false);
-                addRefreshEventListener(DSLNumber);
+                parseHTML(result);
             },
             error: function(jqXHR, textStatus, errorThrown){
-                var page = $("#plan-details").html();
-                $("#plan-details").html(page + "<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>");
+                $("#plan-details").append(notAirtelBroadbandHTML);
                 console.log(errorThrown, textStatus);
             }
     });
+}
+
+function parseHTML(HTML){
+    var page = $("<div>");
+    page.html(HTML);
+    var plan       = $(page.find(".description")[0]).find("span").html();
+    var dataLeft   = $(page.find(".description")[1]).find("span").html();
+    var daysLeft   = $(page.find(".description")[2]).find("span").html();
+    var DSLNumber  = $(page.find(".description")[3]).find("span").html();
+    var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
+    var message    = $(page.find(".detail")[0]).find("p").html();
+    addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
+    showCharts(DSLNumber, false);
+    addRefreshEventListener(DSLNumber);
 }
 
 function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message){
