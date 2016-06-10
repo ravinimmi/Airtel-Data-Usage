@@ -27,13 +27,14 @@ body {
     margin-top: 20px;
 }
 
+.airtel-page{
+    margin-left: 42%;
+    margin-top: 27%;
+}
+
 #preloader{
     margin-left: 45%;
     margin-top: 20%;
-}
-
-#usage{
-    margin-top: 63px;
 }
 
 #card{
@@ -49,9 +50,4 @@ body {
     color: #663399;
 }
 
-
-.airtel-page{
-    margin-left: 42%;
-    margin-top: 27%;
-}
 
