@@ -10,73 +10,57 @@
     <script src="main.js"></script>
   </head>
   <body>
-    <nav class="top-nav blue">
-        <div class="nav-wrapper">
-            <a><img class="icon" src="images/icon.png" /></a>
-            <a class="title">Airtel Broadband Data Usage</a>
+
+
+    <nav class="top-nav">
+        <div class="nav-wrapper blue darken-1">
+          <a><img class="icon" src="images/icon.png" /></a>
+          <a class="title">Airtel Broadband Data Usage</a>
+          <ul class="right tabs">
+              <li class="tab"><a class="blue-text" href="#plan-details">Plan Details</a></li>
+              <li class="tab"><a class="blue-text" href="#24hrs-usage">Last 24 Hour Usage</a></li>
+              <li class="tab"><a class="blue-text" href="#30days-usage">Last 30 Days Usage</a></li>
+              <div class="indicator blue" style="z-index:1"></div>
+          </ul>
         </div>
     </nav>
-    <div class="container">
-        <br/>
-        
-        <div class="row">
-            <div class="col s6">
-              <div class="card">
-                <div class="card-content blue">
-                  <span class="card-title">Your Internet Plan</span>
-                  <div id="plan-details">
-                        <div class="row">
-                          <div class="col s5"><b>DSL Number:</b></div>
-                          <div class="col s6" id="DSLNumber"></div>
-                          <div class="col s5"><b>Monthy Data: </b></div>
-                          <div class="col s6" id="plan"></div>
-                          <div class="col s5"><b>SmartBytes: </b></div>
-                          <div class="col s6" id="smartBytes"></div>
-                          <div class="col s5"><b>Remaining Data: </b></div>
-                          <div class="col s6" id="dataLeft"></div>
-                          <div class="col s5"><b>Remaining Days: </b></div>
-                          <div class="col s6" id="daysLeft"></div>
-                        </div>
-                  </div>
-                </div>
+
+
+    <div class="row" id="plan-details">
+        <div class="col s7" id="card">
+          <div class="card">
+            <div class="card-content blue">
+              <span class="card-title">Your Internet Plan</span>
+              <div id="plan-details">
+                    <div class="row">
+                      <div class="col s5"><b>DSL Number:</b></div>
+                      <div class="col s6" id="DSLNumber"></div>
+                      <div class="col s5"><b>Monthy Data: </b></div>
+                      <div class="col s6" id="plan"></div>
+                      <div class="col s5"><b>SmartBytes: </b></div>
+                      <div class="col s6" id="smartBytes"></div>
+                      <div class="col s5"><b>Remaining Data: </b></div>
+                      <div class="col s6" id="dataLeft"></div>
+                      <div class="col s5"><b>Remaining Days: </b></div>
+                      <div class="col s6" id="daysLeft"></div>
+                    </div>
               </div>
             </div>
+          </div>
         </div>
-        
-        <div id="login"></div>
-
-        <h5>Last 24 Hour Internet Usage</h5>
-        <div id="container24">
-              <div class="preloader-wrapper big active">
-                <div class="spinner-layer spinner-blue-only">
-                  <div class="circle-clipper left">
-                    <div class="circle"></div>
-                  </div><div class="gap-patch">
-                    <div class="circle"></div>
-                  </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
-                </div>
-              </div>
-        </div>
-        <br/>
-        <h5>Current Month's Internet Usage</h5>
-        <div id="container">
-              <div class="preloader-wrapper big active">
-                <div class="spinner-layer spinner-blue-only">
-                  <div class="circle-clipper left">
-                    <div class="circle"></div>
-                  </div><div class="gap-patch">
-                    <div class="circle"></div>
-                  </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
-                </div>
-              </div>
-        </div>
-
-
+        <div class="col s10" id="message"></div>
     </div>
+        
+    <div id="24hrs-usage">
+      <a class='waves-effect waves-light btn blue refresh' id='24hrs-usage-refresh'>Refresh</a>
+      <div id="24hrs-usage-chart"></div>
+    </div> 
+
+    <div id="30days-usage">
+      <a class='waves-effect waves-light btn blue refresh' id='30days-usage-refresh'>Refresh</a>
+      <div id="30days-usage-chart"></div>
+    </div>
+
   </body>
 </html>
 

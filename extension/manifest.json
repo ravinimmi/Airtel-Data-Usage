@@ -26,6 +26,7 @@
   },
   
   "permissions": [
+      "storage",
       "https://www.airtel.in/",
       "http://122.160.230.125:8080/"
   ]

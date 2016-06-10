@@ -10,25 +10,36 @@ function showPlanDetails(){
                 var daysLeft  = $(page.find(".description")[2]).find("span").html();
                 var DSLNumber = $(page.find(".description")[3]).find("span").html();
                 var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
-                addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes);
-                showCharts(DSLNumber);
+                var message = $(page.find(".detail")[0]).find("p").html();
+                addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
+                showCharts(DSLNumber, false);
+                addRefreshEventListener(DSLNumber);
             },
             error: function(jqXHR, textStatus, errorThrown){
-                var page = $(".container").html();
-                $(".container").html("<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>" + page);
+                var page = $("#plan-details").html();
+                $("#plan-details").html(page + "<br/><h6 class='error-msg'>You do not seem to be connected to Airtel Broadband.</h6>");
                 console.log(errorThrown, textStatus);
             }
     });
 }
 
-function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes)
-{
+function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message){
     $("#DSLNumber").html(DSLNumber);
     $("#plan").html(plan);
     $("#dataLeft").html(dataLeft);
     $("#daysLeft").html(daysLeft);
     $("#smartBytes").html(smartBytes);
+    $("#message").html(message);
     setDataBadge(dataLeft.substring(0, 4));
+}
+
+function addRefreshEventListener(DSLNumber){
+    $("#24hrs-usage-refresh").click(function(){
+        showCharts(DSLNumber, true);
+    });
+    $("#30days-usage-refresh").click(function(){
+        showCharts(DSLNumber, true);
+    });
 }
 
 function setDataBadge(data){
@@ -36,31 +47,39 @@ function setDataBadge(data){
     chrome.browserAction.setBadgeText({text: data});
 }
 
-function showCharts(acctId){
-    var date = new Date();
-    var endDate24 = date.toISOString().split('T')[0];
-    date.setDate(date.getDate()-1);
-    var startDate24 = date.toISOString().split('T')[0];
+function showCharts(acctId, refresh){
+    if(refresh)
+    {
+        var date = new Date();
+        var endDate24 = date.toISOString().split('T')[0];
+        date.setDate(date.getDate()-1);
+        var startDate24 = date.toISOString().split('T')[0];
 
-    var endDate = date.toISOString().split('T')[0];
-    date.setDate(date.getDate()-30);
-    var startDate = date.toISOString().split('T')[0];
+        var endDate = date.toISOString().split('T')[0];
+        date.setDate(date.getDate()-30);
+        var startDate = date.toISOString().split('T')[0];
 
-    params = {
-            acctId: acctId,
-            startDate: startDate24,
-            endDate: endDate24,
-            IsHistoricalRequired: 'N'
-    };
-    getUsageHistory(params, 'container24');
+        params = {
+                acctId: acctId,
+                startDate: startDate24,
+                endDate: endDate24,
+                IsHistoricalRequired: 'N'
+        };
+        getUsageHistory(params, '24hrs-usage');
 
-    params = {
-            acctId: acctId,
-            startDate: startDate,
-            endDate: endDate,
-            IsHistoricalRequired: 'Y'
-    };
-    getUsageHistory(params, 'container');
+        params = {
+                acctId: acctId,
+                startDate: startDate,
+                endDate: endDate,
+                IsHistoricalRequired: 'Y'
+        };
+        getUsageHistory(params, '30days-usage');
+    }
+    else
+    {
+        showOldData('24hrs-usage', acctId);
+        showOldData('30days-usage', acctId);
+    }
 }
 
 function getUsageHistory(params, div_id) { 
@@ -85,14 +104,10 @@ function airtelLoginPage(){
 }
 
 function loggedOutMessage(){
-    $("#container").html("");
-    $("#container24").html("");
-    var loginHTML ="<span style='color: red;'>Please log in to your broadband account to view past internet usage details below.</span>"+
-                   "<br/>"+
-                   "<a class='waves-effect waves-light btn blue' id='airtel_page'>Login</a>"+
-                   "<br/><br/>";
-    $("#login").html(loginHTML);
-    $("#airtel_page").click(airtelLoginPage); 
+    var loginHTML = "<a class='waves-effect waves-light btn blue' id='airtel-page'>Login</a>"
+    $("#24hrs-usage").html(loginHTML);
+    $("#30days-usage").html(loginHTML);
+    $("#airtel-page").click(airtelLoginPage); 
 }
 
 function bucketAndDisplay(response, div_id){
@@ -112,13 +127,16 @@ function bucketAndDisplay(response, div_id){
         x.push(object);
         y.push(dataDict[object]/(1024*1024));
     }
+    saveData(x, y, div_id);
     displayChart(x, y, div_id);
 }
 
 function displayChart(x, y, div_id){
-    $('#'+div_id).highcharts({
+    $('#'+div_id+'-chart').highcharts({
         chart: {
-            type: 'line'
+            type: 'line',
+            width: 650,
+            height: 400
         },
         title: {
             text: 'Data Consumption'
@@ -137,6 +155,26 @@ function displayChart(x, y, div_id){
         }]
     });
 }
+
+function saveData(x, y, div_id){
+    var stuff = {};
+    stuff[div_id] = {'x': x, 'y': y};
+    chrome.storage.local.set(stuff);
+}
+
+function showOldData(div_id, acctId){
+    chrome.storage.local.get(div_id, function(result){
+            if(Object.keys(result).length === 0){
+                showCharts(acctId, true);
+            }
+            else{
+                var x = result[div_id].x;
+                var y = result[div_id].y;
+                displayChart(x, y, div_id);   
+            }
+        });
+}
+
 
 window.onload = showPlanDetails;
 

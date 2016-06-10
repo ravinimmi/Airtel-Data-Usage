@@ -1,22 +1,57 @@
 body {
     font-family: "Roboto", sans-serif;
     font-size: 100%;
-    width: 800px;
-    height: 800px;
+    width: 700px;
+    height: 600px;
 }
 
 .title{
-    font-size: 18px;
-    float: right;
-    margin-right: 61%;
+    font-size: 22px;
+    margin-left: 10px;
 }
 
 .icon{
     height: 50px;
     width:  50px;
     margin: 7px 0px 0px 7px;
+    float: left;
 }
 
 .error-msg{
     color: red;
+    margin: 281px 0px 0px 48px;
 }
+
+.refresh{
+    margin-left: 522px;
+    margin-top: 20px;
+}
+
+#preloader{
+    margin-left: 45%;
+    margin-top: 24%;
+}
+
+#usage{
+    margin-top: 63px;
+}
+
+#card{
+    margin-top: 37px;
+    margin-left: 37px;
+    font-size: 16px;
+    width: 58%;
+}
+
+#message{
+    font-size: 16px;
+    margin-left: 37px;
+    color: #663399;
+}
+
+
+#airtel-page{
+    margin-left: 42%;
+    margin-top: 27%;
+}
+
