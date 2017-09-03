@@ -37,10 +37,11 @@ function showPreLoader(){
 function parseHTML(HTML){
     var page = $("<div>");
     page.html(HTML);
-    var plan       = $(page.find(".description")[0]).find("span").html();
-    var dataLeft   = $(page.find(".description")[1]).find("span").html();
-    var daysLeft   = $(page.find(".description")[2]).find("span").html();
-    var DSLNumber  = $(page.find(".description")[3]).find("span").html();
+    descriptionParent = $(page.find(".description")[0].parentElement.parentElement);
+    var plan       = $(descriptionParent.find('span')[0]).html()
+    var dataLeft   = $(descriptionParent.find('span')[1]).html()
+    var daysLeft   = $(descriptionParent.find('span')[2]).html()
+    var DSLNumber  = $(descriptionParent.find('span')[3]).html()
     var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
     var message    = $(page.find(".detail")[0]).find("p").html();
     addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
@@ -101,7 +102,7 @@ function showChart(acctId, days, IsHistoricalRequired, div_id){
     getUsageHistory(params, div_id);
 }
 
-function getUsageHistory(params, div_id) { 
+function getUsageHistory(params, div_id) {
     $.ajax({url: USAGE_URL,
             data: params,
             success: function(result){
@@ -192,7 +193,7 @@ function showOldChart(div_id, DSLNumber){
         else{
             var x = result[div_id].x;
             var y = result[div_id].y;
-            displayChart(x, y, div_id);   
+            displayChart(x, y, div_id);
         }
     });
 }
