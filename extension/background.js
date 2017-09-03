@@ -4,7 +4,7 @@ function showRemainingData(){
             success: function(result){
                 var page = $("<div>");
                 page.html(result);
-                var dataLeft  = $(page.find(".description")[1]).find("span").html();
+                var dataLeft  = $($(page.find(".description")[0].parentElement.parentElement).find('span')[1]).html()
                 setDataBadge(dataLeft.substring(0, 4));
             }
     });
