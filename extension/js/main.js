@@ -34,28 +34,64 @@ function showPreLoader(){
     $("#30days-usage-chart").html(preloaderHTML);
 }
 
+
+function parseDescription(text) {
+    var data = text.split("\n").map(
+        function(x) {return x.trim()}
+    ).filter(
+        function(x) {return x != ""}
+    );
+
+    var keywords = [];
+
+    for(i in data) {
+        keywords = keywords.concat(data[i].split(":"));
+    }
+
+    var data = {}
+    var key = []
+    for(i in keywords) {
+        keywords[i] = keywords[i].trim();
+        if (keywords[i] == "") continue;
+
+        if(!isNaN(keywords[i][0])) {
+            data[key.join(" ")] = keywords[i];
+            key = [];
+        }
+        else {
+            key.push(keywords[i]);
+        }
+    }
+
+    return data
+}
+
+
 function parseHTML(HTML){
     var page = $("<div>");
     page.html(HTML);
-    descriptionParent = $(page.find(".description")[0].parentElement.parentElement);
-    var plan       = $(descriptionParent.find('span')[0]).html()
-    var dataLeft   = $(descriptionParent.find('span')[1]).html()
-    var daysLeft   = $(descriptionParent.find('span')[2]).html()
-    var DSLNumber  = $(descriptionParent.find('span')[3]).html()
-    var smartBytes = $($(page.find(".description")[0]).find("span")[1]).html() || "0 GB";
     var message    = $(page.find(".detail")[0]).find("p").html();
-    addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message);
+    descriptionParent = $(page.find(".description")[0].parentElement.parentElement);
+
+    var data = parseDescription(descriptionParent.text());
+    var plan = data['Your allocated high-speed data limit is Plan'];
+    var dataLeft = data['You are left with'];
+    var daysLeft = data['No. of days left in the current bill cycle'];
+    var DSLNumber = data['DSL number'];
+    var carryOver = data['CarryOver'] || "0 GB";
+
+    addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, carryOver, message);
     showOldChart('24hrs-usage', DSLNumber);
     showOldChart('30days-usage', DSLNumber);
     addRefreshEventListener(DSLNumber);
 }
 
-function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, smartBytes, message){
+function addDetailsToPage(plan, dataLeft, daysLeft, DSLNumber, carryOver, message){
     $("#DSLNumber").html(DSLNumber);
     $("#plan").html(plan);
     $("#dataLeft").html(dataLeft);
     $("#daysLeft").html(daysLeft);
-    $("#smartBytes").html(smartBytes);
+    $("#carryOver").html(carryOver);
     $("#message").html(message);
     setDataBadge(dataLeft.substring(0, 4));
 }
