@@ -1,10 +1,43 @@
+function parseDescription(text) {
+    var data = text.split("\n").map(
+        function(x) {return x.trim()}
+    ).filter(
+        function(x) {return x != ""}
+    );
+
+    var keywords = [];
+
+    for(i in data) {
+        keywords = keywords.concat(data[i].split(":"));
+    }
+
+    var data = {}
+    var key = []
+    for(i in keywords) {
+        keywords[i] = keywords[i].trim();
+        if (keywords[i] == "") continue;
+
+        if(!isNaN(keywords[i][0])) {
+            data[key.join(" ")] = keywords[i];
+            key = [];
+        }
+        else {
+            key.push(keywords[i]);
+        }
+    }
+
+    return data
+}
+
 
 function showRemainingData(){
     $.ajax({url: 'http://122.160.230.125:8080/planupdate/',
             success: function(result){
                 var page = $("<div>");
                 page.html(result);
-                var dataLeft  = $($(page.find(".description")[0].parentElement.parentElement).find('span')[1]).html()
+                var descriptionParent = $(page.find(".description")[0].parentElement.parentElement);
+                var data = parseDescription(descriptionParent.text());
+                var dataLeft = data['You are left with'];
                 setDataBadge(dataLeft.substring(0, 4));
             }
     });
